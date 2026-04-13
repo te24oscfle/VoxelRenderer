@@ -5,6 +5,7 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Text;
 using VoxelRenderer.Classes;
 
@@ -22,6 +23,15 @@ namespace VoxelRenderer
         Matrix4 model;
         Matrix4 view;
         Matrix4 projection;
+
+        Vector3 CHUNK_SIZE = new Vector3(4, 1, 4);
+
+        Vector3 cameraPosition = new Vector3(1.0f, 0.0f, 4.0f);
+        float movementSpeed = 7.5f;
+
+        Vector3 FRONT = new Vector3(0.0f, 0.0f, -1.0f);
+        Vector3 UP = new Vector3(0.0f, 1.0f, 0.0f);
+        Vector3 RIGHT = new Vector3(1.0f, 0.0f, 0.0f);
 
         float[] vertices = {
             -0.5f, -0.5f, -0.5f,
@@ -79,14 +89,43 @@ namespace VoxelRenderer
         //    0, 1, 3, // Right triangle
         //};
 
-        protected override void OnUpdateFrame(FrameEventArgs args)
+        protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            base.OnUpdateFrame(args);
+            base.OnUpdateFrame(e);
 
+            float deltaTime = (float)e.Time;
+
+            if(!IsFocused)
+            {
+                return;
+            }
+            
             if (KeyboardState.IsKeyDown(Keys.Escape))
             {
                 Close();
             }
+
+            // Camera Movement
+            if (KeyboardState.IsKeyDown(Keys.W)) // Forward
+            {
+                cameraPosition += FRONT * movementSpeed * deltaTime;
+            }
+
+            if (KeyboardState.IsKeyDown(Keys.S)) // Backward
+            {
+                cameraPosition -= FRONT * movementSpeed * deltaTime;
+            }
+
+            if (KeyboardState.IsKeyDown(Keys.D)) // Right
+            {
+                cameraPosition += RIGHT * movementSpeed * deltaTime;
+            }
+
+            if (KeyboardState.IsKeyDown(Keys.A)) // Left
+            {
+                cameraPosition -= RIGHT * movementSpeed * deltaTime;
+            }
+            // Technically you can move faster by moving diagonally, but since movement is not the core of this project, it doesn't matter
         }
 
         protected override void OnLoad()
@@ -97,11 +136,6 @@ namespace VoxelRenderer
 
             // Background Color
             GL.ClearColor(0.2f, 0.4f, 0.6f, 0.1f);
-
-            // Coordinate Matricies
-            model = Matrix4.CreateRotationY(MathHelper.DegreesToRadians(-45.0f)) * Matrix4.CreateRotationX(MathHelper.DegreesToRadians(30.0f));
-            view = Matrix4.CreateTranslation(0.0f, 0.0f, -3.0f);
-            projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(45.0f), ClientSize.X / (float)ClientSize.Y, 0.1f, 100.0f);
             
             // Shader Setup
             string vertexShaderSource = File.ReadAllText(Path.Combine(
@@ -159,16 +193,35 @@ namespace VoxelRenderer
 
             GL.BindVertexArray(VAO);
 
+            view = Matrix4.LookAt(cameraPosition, cameraPosition + FRONT, UP);
+            projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(45.0f), ClientSize.X / (float)ClientSize.Y, 0.1f, 100.0f);
+
             GL.UseProgram(shaderProgram);
 
-            Console.WriteLine(GL.GetUniformLocation(shaderProgram, "model"));
-
-            ShaderManager.SetMatrix4(shaderProgram, "model", model);
             ShaderManager.SetMatrix4(shaderProgram, "view", view);
             ShaderManager.SetMatrix4(shaderProgram, "projection", projection);
 
+            // Chunk Rendering (will use later)
+            
+            /*for (uint x = 0; x < CHUNK_SIZE.X; x++)
+            {
+                for (uint z = 0; z < CHUNK_SIZE.Z; z++)
+                {
+                    Vector3 pos = new Vector3(x, 0, z);
+                    model = Matrix4.CreateTranslation(pos);
+                    ShaderManager.SetMatrix4(shaderProgram, "model", model);
+                    GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
+                }
+            }*/
+
+
+            model = Matrix4.CreateTranslation(new Vector3(0.0f, 0.0f, 0.0f));
+            ShaderManager.SetMatrix4(shaderProgram, "model", model);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
-            //GL.DrawElements(PrimitiveType.Triangles, indicies.Length, DrawElementsType.UnsignedInt, 0);
+
+            model = Matrix4.CreateTranslation(new Vector3(2.0f, 0.0f, 0.0f));
+            ShaderManager.SetMatrix4(shaderProgram, "model", model);
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
 
             SwapBuffers();
         }
@@ -178,9 +231,6 @@ namespace VoxelRenderer
             base.OnFramebufferResize(e);
 
             GL.Viewport(0, 0, e.Width, e.Height);
-
-            // Update the projection matrix, otherwise the cube will appear stretched.
-            projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(45.0f), e.Width / (float)e.Height, 0.1f, 100.0f);
         }
 
         protected override void OnUnload()
