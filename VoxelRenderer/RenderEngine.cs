@@ -27,11 +27,18 @@ namespace VoxelRenderer
         Vector3 CHUNK_SIZE = new Vector3(4, 1, 4);
 
         Vector3 cameraPosition = new Vector3(1.0f, 0.0f, 4.0f);
-        float movementSpeed = 7.5f;
+        
+        float yaw = -90.0f;
+        float pitch = 0.0f;
+        Vector3 lookVector = new Vector3(0.0f, 1.0f, 0.0f);
 
-        Vector3 FRONT = new Vector3(0.0f, 0.0f, -1.0f);
-        Vector3 UP = new Vector3(0.0f, 1.0f, 0.0f);
-        Vector3 RIGHT = new Vector3(1.0f, 0.0f, 0.0f);
+        float movementSpeed = 6.5f;
+        float sensitivity = 0.1f;
+        float FOV = 65.0f;
+
+        Vector3 up = new Vector3(0.0f, 1.0f, 0.0f);
+
+        Vector2 lastMousePos;
 
         float[] vertices = {
             -0.5f, -0.5f, -0.5f,
@@ -108,24 +115,34 @@ namespace VoxelRenderer
             // Camera Movement
             if (KeyboardState.IsKeyDown(Keys.W)) // Forward
             {
-                cameraPosition += FRONT * movementSpeed * deltaTime;
+                cameraPosition += lookVector * movementSpeed * deltaTime;
             }
 
             if (KeyboardState.IsKeyDown(Keys.S)) // Backward
             {
-                cameraPosition -= FRONT * movementSpeed * deltaTime;
+                cameraPosition -= lookVector * movementSpeed * deltaTime;
             }
 
             if (KeyboardState.IsKeyDown(Keys.D)) // Right
             {
-                cameraPosition += RIGHT * movementSpeed * deltaTime;
+                cameraPosition += Vector3.Normalize(Vector3.Cross(lookVector, up)) * movementSpeed * deltaTime;
             }
 
             if (KeyboardState.IsKeyDown(Keys.A)) // Left
             {
-                cameraPosition -= RIGHT * movementSpeed * deltaTime;
+                cameraPosition -= Vector3.Normalize(Vector3.Cross(lookVector, up)) * movementSpeed * deltaTime;
             }
             // Technically you can move faster by moving diagonally, but since movement is not the core of this project, it doesn't matter.
+
+            if (KeyboardState.IsKeyDown(Keys.Space)) // Up
+            {
+                cameraPosition += up * movementSpeed * deltaTime;
+            }
+
+            if (KeyboardState.IsKeyDown(Keys.LeftShift)) // Down
+            {
+                cameraPosition -= up * movementSpeed * deltaTime;
+            }
         }
 
         protected override void OnLoad()
@@ -133,6 +150,8 @@ namespace VoxelRenderer
             base.OnLoad();
 
             GL.Enable(EnableCap.DepthTest);
+
+            CursorState = CursorState.Grabbed;
 
             // Background Color
             GL.ClearColor(0.2f, 0.4f, 0.6f, 0.1f);
@@ -193,8 +212,12 @@ namespace VoxelRenderer
 
             GL.BindVertexArray(VAO);
 
-            view = Matrix4.LookAt(cameraPosition, cameraPosition + FRONT, UP);
-            projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(45.0f), ClientSize.X / (float)ClientSize.Y, 0.1f, 100.0f);
+            lookVector.X = (float)(Math.Cos(MathHelper.DegreesToRadians(yaw)) * Math.Cos(MathHelper.DegreesToRadians(pitch)));
+            lookVector.Y = (float)Math.Sin(MathHelper.DegreesToRadians(pitch));
+            lookVector.Z = (float)(Math.Sin(MathHelper.DegreesToRadians(yaw)) * Math.Cos(MathHelper.DegreesToRadians(pitch)));
+
+            view = Matrix4.LookAt(cameraPosition, cameraPosition + lookVector, up);
+            projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(FOV), ClientSize.X / (float)ClientSize.Y, 0.1f, 100.0f);
 
             GL.UseProgram(shaderProgram);
 
@@ -224,6 +247,17 @@ namespace VoxelRenderer
             GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
 
             SwapBuffers();
+        }
+
+        protected override void OnMouseMove(MouseMoveEventArgs mouse)
+        {
+            base.OnMouseMove(mouse);
+
+            Vector2 deltaPos = new Vector2(mouse.X - lastMousePos.X, mouse.Y - lastMousePos.Y);
+            yaw += deltaPos.X * sensitivity;
+            pitch -= deltaPos.Y * sensitivity;
+
+            lastMousePos = new Vector2(mouse.X, mouse.Y);
         }
 
         protected override void OnFramebufferResize(FramebufferResizeEventArgs e)
