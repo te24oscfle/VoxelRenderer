@@ -96,7 +96,7 @@ namespace VoxelRenderer
             GL.Enable(EnableCap.DepthTest);
 
             // Background Color
-            GL.ClearColor(0.2f, 0.2f, 0.8f, 0.1f);
+            GL.ClearColor(0.2f, 0.4f, 0.6f, 0.1f);
 
             // Coordinate Matricies
             model = Matrix4.CreateRotationY(MathHelper.DegreesToRadians(-45.0f)) * Matrix4.CreateRotationX(MathHelper.DegreesToRadians(30.0f));
