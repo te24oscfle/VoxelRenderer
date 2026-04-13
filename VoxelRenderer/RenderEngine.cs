@@ -125,7 +125,7 @@ namespace VoxelRenderer
             {
                 cameraPosition -= RIGHT * movementSpeed * deltaTime;
             }
-            // Technically you can move faster by moving diagonally, but since movement is not the core of this project, it doesn't matter
+            // Technically you can move faster by moving diagonally, but since movement is not the core of this project, it doesn't matter.
         }
 
         protected override void OnLoad()
