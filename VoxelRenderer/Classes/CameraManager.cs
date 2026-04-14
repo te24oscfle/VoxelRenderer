@@ -17,14 +17,15 @@ namespace VoxelRenderer.Classes
         public static float FOV = 65.0f;
 
         // Public Camera fields
-        public static Vector3 Position = new Vector3(0.0f, 1.0f, -2.0f);
-        public static Vector3 LookVector = new Vector3();
+        public static Vector3 Position = new Vector3(0.0f, 0.0f, 0.0f);
+        public static Vector3 LookVector = new Vector3(0.0f, 0.0f, -1.0f);
         
         // Private Camera fields
         private static float yaw = -90.0f;
         private static float pitch = 0.0f;
 
         private static Vector2 lastMousePosition;
+        private static Vector3 movementVector = new Vector3();
 
         private static void UpdateYawAndPitch(Vector2 deltaPosition)
         {
@@ -32,6 +33,41 @@ namespace VoxelRenderer.Classes
             pitch -= deltaPosition.Y * Sensitivity;
         }
 
+        public static void UpdatePosition(KeyboardState keyboardState, float deltaTime) 
+        {
+            // Camera Movement
+            if (keyboardState.IsKeyDown(Keys.W)) // Forward
+            {
+                Position += LookVector * Speed * deltaTime;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.S)) // Backward
+            {
+                Position -= LookVector * Speed * deltaTime;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.D)) // Right
+            {
+                Position += Vector3.Normalize(Vector3.Cross(LookVector, Vector3.UnitY)) * Speed * deltaTime;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.A)) // Left
+            {
+                Position -= Vector3.Normalize(Vector3.Cross(LookVector, Vector3.UnitY)) * Speed * deltaTime;
+            }
+            // Technically you can move faster by moving diagonally, but since movement is not the core of this project, it doesn't matter.
+
+            if (keyboardState.IsKeyDown(Keys.Space)) // Up
+            {
+                Position += Vector3.UnitY * Speed * deltaTime;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.LeftShift)) // Down
+            {
+                Position -= Vector3.UnitY * Speed * deltaTime;
+            }
+        }
+        
         private static void UpdateLookVector()
         {
             LookVector.X = (float)(Math.Cos(MathHelper.DegreesToRadians(yaw)) * Math.Cos(MathHelper.DegreesToRadians(pitch)));

@@ -94,55 +94,26 @@ namespace VoxelRenderer
         //uint[] indicies = {
         //    0, 2, 3, // Left triangle
         //    0, 1, 3, // Right triangle
-        //};
+        //}; 
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
 
             float deltaTime = (float)e.Time;
+            var keyboardState = KeyboardState;
 
             if(!IsFocused)
             {
                 return;
             }
-            
+
             if (KeyboardState.IsKeyDown(Keys.Escape))
             {
                 Close();
             }
 
-            // Camera Movement
-            if (KeyboardState.IsKeyDown(Keys.W)) // Forward
-            {
-                cameraPosition += lookVector * movementSpeed * deltaTime;
-            }
-
-            if (KeyboardState.IsKeyDown(Keys.S)) // Backward
-            {
-                cameraPosition -= lookVector * movementSpeed * deltaTime;
-            }
-
-            if (KeyboardState.IsKeyDown(Keys.D)) // Right
-            {
-                cameraPosition += Vector3.Normalize(Vector3.Cross(lookVector, up)) * movementSpeed * deltaTime;
-            }
-
-            if (KeyboardState.IsKeyDown(Keys.A)) // Left
-            {
-                cameraPosition -= Vector3.Normalize(Vector3.Cross(lookVector, up)) * movementSpeed * deltaTime;
-            }
-            // Technically you can move faster by moving diagonally, but since movement is not the core of this project, it doesn't matter.
-
-            if (KeyboardState.IsKeyDown(Keys.Space)) // Up
-            {
-                cameraPosition += up * movementSpeed * deltaTime;
-            }
-
-            if (KeyboardState.IsKeyDown(Keys.LeftShift)) // Down
-            {
-                cameraPosition -= up * movementSpeed * deltaTime;
-            }
+            CameraManager.UpdatePosition(keyboardState, deltaTime);
         }
 
         protected override void OnLoad()
@@ -213,7 +184,7 @@ namespace VoxelRenderer
             GL.BindVertexArray(VAO);
 
             view = Matrix4.LookAt(CameraManager.Position, CameraManager.Position + CameraManager.LookVector, up);
-            projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(FOV), ClientSize.X / (float)ClientSize.Y, 0.1f, 100.0f);
+            projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(CameraManager.FOV), ClientSize.X / (float)ClientSize.Y, 0.1f, 100.0f);
 
             GL.UseProgram(shaderProgram);
 
