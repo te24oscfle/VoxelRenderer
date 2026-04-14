@@ -85,9 +85,32 @@ namespace VoxelRenderer
         //    0, 1, 3, // Right triangle
         //}; 
 
+        protected string GetShaderSource(string shaderPath)
+        {
+            string fullPath = Path.Combine(
+                AppContext.BaseDirectory,
+                "Shaders",
+                shaderPath
+            );
+            string source = File.ReadAllText(fullPath);
+            return source;
+        }
+        
         protected Matrix4 GetProjectionMatrix()
         {
-            return Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(CameraManager.FOV), ClientSize.X / (float)ClientSize.Y, NEAR_PLANE, FAR_PLANE);
+            return Matrix4.CreatePerspectiveFieldOfView(
+                MathHelper.DegreesToRadians(CameraManager.FOV), 
+                ClientSize.X / (float)ClientSize.Y, 
+                NEAR_PLANE, 
+                FAR_PLANE
+            );
+        }
+        
+        protected void RenderCube(Vector3 position)
+        {
+            model = Matrix4.CreateTranslation(position);
+            ShaderManager.SetMatrix4(shaderProgram, "model", model);
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -120,22 +143,14 @@ namespace VoxelRenderer
 
             // Background Color
             GL.ClearColor(0.2f, 0.4f, 0.6f, 0.1f);
-            
-            // Shader Setup
-            string vertexShaderSource = File.ReadAllText(Path.Combine(
-                AppContext.BaseDirectory,
-                "Shaders",
-                "vertexShader.glsl"
-            ));
 
-            string fragmentShaderSource = File.ReadAllText(Path.Combine(
-                AppContext.BaseDirectory,
-                "Shaders",
-                "fragmentShader.glsl"
-            ));
+            // Shader Setup
+            string vertexShaderSource = GetShaderSource("vertexShader.glsl");
+            string fragmentShaderSource = GetShaderSource("fragmentShader.glsl");
 
             int vertexShader = ShaderManager.CompileShader(ShaderType.VertexShader, vertexShaderSource);
             int fragmentShader = ShaderManager.CompileShader(ShaderType.FragmentShader, fragmentShaderSource);
+
             shaderProgram = ShaderManager.LinkShaders(vertexShader, fragmentShader);
 
             // VBO, VAO and EBO Setup
@@ -186,7 +201,7 @@ namespace VoxelRenderer
             ShaderManager.SetMatrix4(shaderProgram, "projection", projection);
 
             // Chunk Rendering (will use later)
-            
+
             /*for (uint x = 0; x < CHUNK_SIZE.X; x++)
             {
                 for (uint z = 0; z < CHUNK_SIZE.Z; z++)
@@ -199,13 +214,8 @@ namespace VoxelRenderer
             }*/
 
 
-            model = Matrix4.CreateTranslation(new Vector3(0.0f, 0.0f, 0.0f));
-            ShaderManager.SetMatrix4(shaderProgram, "model", model);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
-
-            model = Matrix4.CreateTranslation(new Vector3(2.0f, 0.0f, 0.0f));
-            ShaderManager.SetMatrix4(shaderProgram, "model", model);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
+            RenderCube(new Vector3(0.0f, 0.0f, 0.0f));
+            RenderCube(new Vector3(2.0f, 0.0f, 0.0f));
 
             SwapBuffers();
         }
