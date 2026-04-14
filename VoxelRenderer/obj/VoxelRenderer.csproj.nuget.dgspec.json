@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Oscar\\source\\repos\\te24oscfle\\VoxelRenderer\\VoxelRenderer\\VoxelRenderer.csproj": {}
+    "C:\\Users\\te24o\\source\\repos\\VoxelRenderer\\VoxelRenderer\\VoxelRenderer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Oscar\\source\\repos\\te24oscfle\\VoxelRenderer\\VoxelRenderer\\VoxelRenderer.csproj": {
+    "C:\\Users\\te24o\\source\\repos\\VoxelRenderer\\VoxelRenderer\\VoxelRenderer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Oscar\\source\\repos\\te24oscfle\\VoxelRenderer\\VoxelRenderer\\VoxelRenderer.csproj",
+        "projectUniqueName": "C:\\Users\\te24o\\source\\repos\\VoxelRenderer\\VoxelRenderer\\VoxelRenderer.csproj",
         "projectName": "VoxelRenderer",
-        "projectPath": "C:\\Users\\Oscar\\source\\repos\\te24oscfle\\VoxelRenderer\\VoxelRenderer\\VoxelRenderer.csproj",
-        "packagesPath": "C:\\Users\\Oscar\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Oscar\\source\\repos\\te24oscfle\\VoxelRenderer\\VoxelRenderer\\obj\\",
+        "projectPath": "C:\\Users\\te24o\\source\\repos\\VoxelRenderer\\VoxelRenderer\\VoxelRenderer.csproj",
+        "packagesPath": "C:\\Users\\te24o\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\te24o\\source\\repos\\VoxelRenderer\\VoxelRenderer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Oscar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\te24o\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

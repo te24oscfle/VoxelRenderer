@@ -212,11 +212,7 @@ namespace VoxelRenderer
 
             GL.BindVertexArray(VAO);
 
-            lookVector.X = (float)(Math.Cos(MathHelper.DegreesToRadians(yaw)) * Math.Cos(MathHelper.DegreesToRadians(pitch)));
-            lookVector.Y = (float)Math.Sin(MathHelper.DegreesToRadians(pitch));
-            lookVector.Z = (float)(Math.Sin(MathHelper.DegreesToRadians(yaw)) * Math.Cos(MathHelper.DegreesToRadians(pitch)));
-
-            view = Matrix4.LookAt(cameraPosition, cameraPosition + lookVector, up);
+            view = Matrix4.LookAt(CameraManager.Position, CameraManager.Position + CameraManager.LookVector, up);
             projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(FOV), ClientSize.X / (float)ClientSize.Y, 0.1f, 100.0f);
 
             GL.UseProgram(shaderProgram);
@@ -253,11 +249,7 @@ namespace VoxelRenderer
         {
             base.OnMouseMove(mouse);
 
-            Vector2 deltaPos = new Vector2(mouse.X - lastMousePos.X, mouse.Y - lastMousePos.Y);
-            yaw += deltaPos.X * sensitivity;
-            pitch -= deltaPos.Y * sensitivity;
-
-            lastMousePos = new Vector2(mouse.X, mouse.Y);
+            CameraManager.OnMouseMove(mouse);
         }
 
         protected override void OnFramebufferResize(FramebufferResizeEventArgs e)
