@@ -24,6 +24,9 @@ namespace VoxelRenderer
         Matrix4 view;
         Matrix4 projection;
 
+        const float NEAR_PLANE = 0.1f;
+        const float FAR_PLANE = 100.0f;
+
         Vector3 CHUNK_SIZE = new Vector3(4, 1, 4);
 
         float[] vertices = {
@@ -81,6 +84,11 @@ namespace VoxelRenderer
         //    0, 2, 3, // Left triangle
         //    0, 1, 3, // Right triangle
         //}; 
+
+        protected Matrix4 GetProjectionMatrix()
+        {
+            return Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(CameraManager.FOV), ClientSize.X / (float)ClientSize.Y, NEAR_PLANE, FAR_PLANE);
+        }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
@@ -169,8 +177,8 @@ namespace VoxelRenderer
 
             GL.BindVertexArray(VAO);
 
-            view = Matrix4.LookAt(CameraManager.Position, CameraManager.Position + CameraManager.LookVector, Vector3.UnitY);
-            projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(CameraManager.FOV), ClientSize.X / (float)ClientSize.Y, 0.1f, 100.0f);
+            view = CameraManager.GetViewMatrix();
+            projection = GetProjectionMatrix();
 
             GL.UseProgram(shaderProgram);
 

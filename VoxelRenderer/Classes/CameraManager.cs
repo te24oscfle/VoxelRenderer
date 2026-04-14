@@ -32,8 +32,15 @@ namespace VoxelRenderer.Classes
             yaw += deltaPosition.X * Sensitivity;
             pitch -= deltaPosition.Y * Sensitivity;
         }
+        
+        private static void UpdateLookVector()
+        {
+            LookVector.X = (float)(Math.Cos(MathHelper.DegreesToRadians(yaw)) * Math.Cos(MathHelper.DegreesToRadians(pitch)));
+            LookVector.Y = (float)Math.Sin(MathHelper.DegreesToRadians(pitch));
+            LookVector.Z = (float)(Math.Sin(MathHelper.DegreesToRadians(yaw)) * Math.Cos(MathHelper.DegreesToRadians(pitch)));
+        }
 
-        public static void UpdatePosition(KeyboardState keyboardState, float deltaTime) 
+        public static void UpdatePosition(KeyboardState keyboardState, float deltaTime)
         {
             // Camera Movement
             if (keyboardState.IsKeyDown(Keys.W)) // Forward
@@ -67,13 +74,12 @@ namespace VoxelRenderer.Classes
                 Position -= Vector3.UnitY * Speed * deltaTime;
             }
         }
-        
-        private static void UpdateLookVector()
+
+        public static Matrix4 GetViewMatrix()
         {
-            LookVector.X = (float)(Math.Cos(MathHelper.DegreesToRadians(yaw)) * Math.Cos(MathHelper.DegreesToRadians(pitch)));
-            LookVector.Y = (float)Math.Sin(MathHelper.DegreesToRadians(pitch));
-            LookVector.Z = (float)(Math.Sin(MathHelper.DegreesToRadians(yaw)) * Math.Cos(MathHelper.DegreesToRadians(pitch)));
+            return Matrix4.LookAt(Position, Position + LookVector, Vector3.UnitY);
         }
+
         public static void OnMouseMove(MouseMoveEventArgs mouse)
         {
             Vector2 deltaPos = new Vector2(mouse.X - lastMousePosition.X, mouse.Y - lastMousePosition.Y);
