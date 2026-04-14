@@ -26,20 +26,6 @@ namespace VoxelRenderer
 
         Vector3 CHUNK_SIZE = new Vector3(4, 1, 4);
 
-        Vector3 cameraPosition = new Vector3(1.0f, 0.0f, 4.0f);
-        
-        float yaw = -90.0f;
-        float pitch = 0.0f;
-        Vector3 lookVector = new Vector3(0.0f, 1.0f, 0.0f);
-
-        float movementSpeed = 6.5f;
-        float sensitivity = 0.1f;
-        float FOV = 65.0f;
-
-        Vector3 up = new Vector3(0.0f, 1.0f, 0.0f);
-
-        Vector2 lastMousePos;
-
         float[] vertices = {
             -0.5f, -0.5f, -0.5f,
              0.5f, -0.5f, -0.5f,
@@ -183,7 +169,7 @@ namespace VoxelRenderer
 
             GL.BindVertexArray(VAO);
 
-            view = Matrix4.LookAt(CameraManager.Position, CameraManager.Position + CameraManager.LookVector, up);
+            view = Matrix4.LookAt(CameraManager.Position, CameraManager.Position + CameraManager.LookVector, Vector3.UnitY);
             projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(CameraManager.FOV), ClientSize.X / (float)ClientSize.Y, 0.1f, 100.0f);
 
             GL.UseProgram(shaderProgram);
