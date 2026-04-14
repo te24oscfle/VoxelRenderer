@@ -25,7 +25,6 @@ namespace VoxelRenderer.Classes
         private static float pitch = 0.0f;
 
         private static Vector2 lastMousePosition;
-        private static Vector3 movementVector = new Vector3();
 
         private static void UpdateYawAndPitch(Vector2 deltaPosition)
         {

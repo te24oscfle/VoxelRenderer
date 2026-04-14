@@ -207,12 +207,9 @@ namespace VoxelRenderer
                 for (uint z = 0; z < CHUNK_SIZE.Z; z++)
                 {
                     Vector3 pos = new Vector3(x, 0, z);
-                    model = Matrix4.CreateTranslation(pos);
-                    ShaderManager.SetMatrix4(shaderProgram, "model", model);
-                    GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
+                    RenderCube(pos)
                 }
             }*/
-
 
             RenderCube(new Vector3(0.0f, 0.0f, 0.0f));
             RenderCube(new Vector3(2.0f, 0.0f, 0.0f));
