@@ -10,13 +10,13 @@ namespace VoxelRenderer.Classes
 {
     public class Block
     {
-        public Vector3 Position;
+        public int BlockId = 0; 
 
-        public Block() : this(new Vector3(0, 0, 0)) { }
+        public Block() : this(0) { }
         
-        public Block(Vector3 position)
+        public Block(int blockId)
         {
-            Position = position;
+            BlockId = blockId;
         }
     }
 }
