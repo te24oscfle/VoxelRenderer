@@ -106,9 +106,9 @@ namespace VoxelRenderer
             );
         }
         
-        protected void RenderCube(Vector3 position)
+        protected void RenderBlock(Block block)
         {
-            model = Matrix4.CreateTranslation(position);
+            model = Matrix4.CreateTranslation(block.Position);
             ShaderManager.SetMatrix4(shaderProgram, "model", model);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
         }
@@ -211,8 +211,8 @@ namespace VoxelRenderer
                 }
             }*/
 
-            RenderCube(new Vector3(0.0f, 0.0f, 0.0f));
-            RenderCube(new Vector3(2.0f, 0.0f, 0.0f));
+            Block block = new Block();
+            RenderBlock(block);
 
             SwapBuffers();
         }
