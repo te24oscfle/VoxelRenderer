@@ -27,8 +27,6 @@ namespace VoxelRenderer
         const float NEAR_PLANE = 0.1f;
         const float FAR_PLANE = 100.0f;
 
-        Vector3 CHUNK_SIZE = new Vector3(4, 1, 4);
-
         float[] vertices = {
             -0.5f, -0.5f, -0.5f,
              0.5f, -0.5f, -0.5f,
