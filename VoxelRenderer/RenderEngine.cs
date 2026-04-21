@@ -207,12 +207,11 @@ namespace VoxelRenderer
             {
                 int index = World.GetIndexFromCoordinates(x, y, z);
                 Block block = World.blocks[index];
-                
-                
+
                 for (uint direction = 1; direction < 7; direction++)
                 {
                     Block? neighbour = World.GetNeighbourFromDirection(x, y, z, direction);
-                    if (neighbour != null)
+                    if (neighbour == null)
                     {
                         block.AddFaceToRender(direction);
                     }

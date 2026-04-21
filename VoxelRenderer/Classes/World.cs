@@ -21,8 +21,8 @@ namespace VoxelRenderer.Classes
     
     public static class World
     {
-        public static int chunkSizeX = 2;
-        public static int chunkSizeY = 1;
+        public static int chunkSizeX = 1;
+        public static int chunkSizeY = 2;
         public static int chunkSizeZ = 1;
 
         public static Block[] blocks = new Block[chunkSizeX * chunkSizeY * chunkSizeZ];
@@ -38,10 +38,10 @@ namespace VoxelRenderer.Classes
                     return GetIndexFromCoordinates(0, -1, 0);
 
                 case (uint)Direction.LEFT:
-                    return GetIndexFromCoordinates(1, 0, 0);
+                    return GetIndexFromCoordinates(-1, 0, 0);
 
                 case (uint)Direction.RIGHT:
-                    return GetIndexFromCoordinates(-1, 0, 0);
+                    return GetIndexFromCoordinates(1, 0, 0);
 
                 case (uint)Direction.FORWARD:
                     return GetIndexFromCoordinates(0, 1, -1);
@@ -84,11 +84,11 @@ namespace VoxelRenderer.Classes
             int originIndex = GetIndexFromCoordinates(originX, originY, originZ);
             int neighbourIndex = originIndex + GetNeighbourIndexFromDirection(direction);
 
-            if(blocks.Length > neighbourIndex)
+            if (blocks.Length > neighbourIndex && neighbourIndex >= 0)
             {
                 return blocks[neighbourIndex];
             }
-            
+
             return null;
         }
 
