@@ -10,15 +10,15 @@ namespace VoxelRenderer.Classes
 {
     public static class World
     {
-        public static int chunkSizeX = 16;
-        public static int chunkSizeY = 32;
-        public static int chunkSizeZ = 16;
+        public static int chunkSizeX = 3;
+        public static int chunkSizeY = 3;
+        public static int chunkSizeZ = 3;
 
-        public static Block[] blocks = new Block[chunkSizeX * chunkSizeY * chunkSizeZ];;
+        public static Block[] blocks = new Block[chunkSizeX * chunkSizeY * chunkSizeZ];
 
         public static int GetIndexFromCoordinates(int x, int y, int z)
         {
-            return x + x + chunkSizeX * (y + chunkSizeY * z);
+            return x + (y * chunkSizeX) + (z * chunkSizeX * chunkSizeY);
         }
 
         // Not yet implemented

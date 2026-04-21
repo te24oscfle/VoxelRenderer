@@ -103,10 +103,10 @@ namespace VoxelRenderer
                 FAR_PLANE
             );
         }
-        
-        protected void RenderBlock(Block block, Vector3 position)
+
+        protected void RenderBlock(Block block, int x, int y, int z)
         {
-            model = Matrix4.CreateTranslation(position);
+            model = Matrix4.CreateTranslation(x, y, z);
             ShaderManager.SetMatrix4(shaderProgram, "model", model);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
         }
@@ -126,6 +126,11 @@ namespace VoxelRenderer
             if (KeyboardState.IsKeyDown(Keys.Escape))
             {
                 Close();
+            }
+
+            if (KeyboardState.IsKeyPressed(Keys.F))
+            {
+                WIREFRAME_MODE = !WIREFRAME_MODE;
             }
 
             CameraManager.UpdatePosition(keyboardState, deltaTime);
@@ -176,10 +181,9 @@ namespace VoxelRenderer
             GL.BindVertexArray(0);
 
             // WIREFRAME MODE
-            if (WIREFRAME_MODE)
-            {
-                GL.PolygonMode(TriangleFace.FrontAndBack, PolygonMode.Line);
-            }
+            
+
+            World.InitilizeWorld();
         }
 
         protected override void OnRenderFrame(FrameEventArgs args)
@@ -200,17 +204,21 @@ namespace VoxelRenderer
 
             // Chunk Rendering (will use later)
 
-            /*for (uint x = 0; x < CHUNK_SIZE.X; x++)
+            World.IterateBlocks((x, y, z) =>
             {
-                for (uint z = 0; z < CHUNK_SIZE.Z; z++)
-                {
-                    Vector3 pos = new Vector3(x, 0, z);
-                    RenderCube(pos)
-                }
-            }*/
+                int index = World.GetIndexFromCoordinates(x, y, z);
+                Block block = World.blocks[index];
+                RenderBlock(block, x, y, z);
+            });
 
-            Block block = new Block();
-            RenderBlock(block, new Vector3(0.0f, 0.0f, 0.0f));
+            if (WIREFRAME_MODE)
+            {
+                GL.PolygonMode(TriangleFace.FrontAndBack, PolygonMode.Line);
+            }
+            else
+            {
+                GL.PolygonMode(TriangleFace.FrontAndBack, PolygonMode.Fill);
+            }
 
             SwapBuffers();
         }
