@@ -106,6 +106,10 @@ namespace VoxelRenderer
 
         protected void RenderBlock(Block block, int x, int y, int z)
         {
+            // TODO: Check faces to render via block.FacesToRender
+            // Make a local veritices array, using only faces to render
+            // Need to update VAO and stuff...
+            
             model = Matrix4.CreateTranslation(x, y, z);
             ShaderManager.SetMatrix4(shaderProgram, "model", model);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
@@ -180,9 +184,6 @@ namespace VoxelRenderer
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.BindVertexArray(0);
 
-            // WIREFRAME MODE
-            
-
             World.InitilizeWorld();
         }
 
@@ -202,15 +203,25 @@ namespace VoxelRenderer
             ShaderManager.SetMatrix4(shaderProgram, "view", view);
             ShaderManager.SetMatrix4(shaderProgram, "projection", projection);
 
-            // Chunk Rendering (will use later)
-
             World.IterateBlocks((x, y, z) =>
             {
                 int index = World.GetIndexFromCoordinates(x, y, z);
                 Block block = World.blocks[index];
+                
+                
+                for (uint direction = 1; direction < 7; direction++)
+                {
+                    Block? neighbour = World.GetNeighbourFromDirection(x, y, z, direction);
+                    if (neighbour != null)
+                    {
+                        block.AddFaceToRender(direction);
+                    }
+                }
+
                 RenderBlock(block, x, y, z);
             });
 
+            // WIREFRAME MODE
             if (WIREFRAME_MODE)
             {
                 GL.PolygonMode(TriangleFace.FrontAndBack, PolygonMode.Line);
