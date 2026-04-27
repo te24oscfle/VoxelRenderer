@@ -21,9 +21,9 @@ namespace VoxelRenderer.Classes
     
     public static class World
     {
-        public static int chunkSizeX = 2;
-        public static int chunkSizeY = 2;
-        public static int chunkSizeZ = 2;
+        public static int chunkSizeX = 3;
+        public static int chunkSizeY = 3;
+        public static int chunkSizeZ = 3;
 
         public static Block[] blocks = new Block[chunkSizeX * chunkSizeY * chunkSizeZ];
 
@@ -45,10 +45,10 @@ namespace VoxelRenderer.Classes
                     return (1, 0, 0);
 
                 case (uint)Direction.FORWARD:
-                    return (0, 0, -1);
+                    return (0, 0, 1);
 
                 case (uint)Direction.BACKWARD:
-                    return (0, 0, 1);
+                    return (0, 0, -1);
             }
 
             return (0, 0, 0);
@@ -89,13 +89,17 @@ namespace VoxelRenderer.Classes
             int z = originZ + dirZ;
 
             // Check if index is invalid
-            if((uint)x >= chunkSizeX || (uint)y >= chunkSizeY || (uint)chunkSizeZ >= chunkSizeZ) {
+            if((uint)x >= chunkSizeX || (uint)y >= chunkSizeY || (uint)z >= chunkSizeZ) {
                 return null;
             }
 
             int index = GetIndexFromCoordinates(x, y, z);
+            if((uint)index >= blocks.Length)
+            {
+                return null;
+            }
 
-            return null;
+            return blocks[index];
         }
 
         public static void InitilizeWorld()

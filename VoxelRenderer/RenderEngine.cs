@@ -203,21 +203,8 @@ namespace VoxelRenderer
             ShaderManager.SetMatrix4(shaderProgram, "view", view);
             ShaderManager.SetMatrix4(shaderProgram, "projection", projection);
 
-            //World.IterateBlocks((x, y, z) =>
-            //{
-            //    // only for convenience
-            //    int index = World.GetIndexFromCoordinates(x, y, z);
-
-            //    for (uint direction = 1; direction < 7; direction++)
-            //    {
-            //        Block? neighbour = World.GetNeighbourFromDirection(x, y, z, direction);
-            //        if (neighbour != null)
-            //        {
-            //            // Neighbour exists
-            //        }
-            //    }
-            //});
-
+            // Calculate Block Face Culling
+            // aka calculate which faces wont be visible.
             World.IterateBlocks((x, y, z) =>
             {
                 int index = World.GetIndexFromCoordinates(x, y, z);
