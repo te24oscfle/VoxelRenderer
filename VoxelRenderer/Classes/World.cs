@@ -21,36 +21,37 @@ namespace VoxelRenderer.Classes
     
     public static class World
     {
-        public static int chunkSizeX = 1;
+        public static int chunkSizeX = 2;
         public static int chunkSizeY = 2;
-        public static int chunkSizeZ = 1;
+        public static int chunkSizeZ = 2;
 
         public static Block[] blocks = new Block[chunkSizeX * chunkSizeY * chunkSizeZ];
 
-        private static int GetNeighbourIndexFromDirection(uint direction)
+        private static (int, int, int) GetNeighbourIndexFromDirection(uint direction)
         {
+            
             switch(direction)
             {
                 case (uint)Direction.UP:
-                    return GetIndexFromCoordinates(0, 1, 0);
+                    return (0, 1, 0);
 
                 case (uint)Direction.DOWN:
-                    return GetIndexFromCoordinates(0, -1, 0);
+                    return (0, -1, 0);
 
                 case (uint)Direction.LEFT:
-                    return GetIndexFromCoordinates(-1, 0, 0);
+                    return (-1, 0, 0);
 
                 case (uint)Direction.RIGHT:
-                    return GetIndexFromCoordinates(1, 0, 0);
+                    return (1, 0, 0);
 
                 case (uint)Direction.FORWARD:
-                    return GetIndexFromCoordinates(0, 1, -1);
+                    return (0, 0, -1);
 
                 case (uint)Direction.BACKWARD:
-                    return GetIndexFromCoordinates(0, 1, 1);
+                    return (0, 0, 1);
             }
 
-            return 0;
+            return (0, 0, 0);
         }
 
 
@@ -81,13 +82,18 @@ namespace VoxelRenderer.Classes
 
         public static Block? GetNeighbourFromDirection(int originX, int originY, int originZ, uint direction)
         {
-            int originIndex = GetIndexFromCoordinates(originX, originY, originZ);
-            int neighbourIndex = originIndex + GetNeighbourIndexFromDirection(direction);
+            (int dirX, int dirY, int dirZ) = GetNeighbourIndexFromDirection(direction);
 
-            if (blocks.Length > neighbourIndex && neighbourIndex >= 0)
-            {
-                return blocks[neighbourIndex];
+            int x = originX + dirX;
+            int y = originY + dirY;
+            int z = originZ + dirZ;
+
+            // Check if index is invalid
+            if((uint)x >= chunkSizeX || (uint)y >= chunkSizeY || (uint)chunkSizeZ >= chunkSizeZ) {
+                return null;
             }
+
+            int index = GetIndexFromCoordinates(x, y, z);
 
             return null;
         }
