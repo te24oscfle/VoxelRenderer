@@ -201,8 +201,6 @@ namespace VoxelRenderer
                         block.AddFaceToRender(direction);
                     }
                 }
-
-                RenderBlock(block, x, y, z);
             });
         }
 
