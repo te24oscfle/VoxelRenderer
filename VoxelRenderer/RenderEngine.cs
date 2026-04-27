@@ -185,6 +185,25 @@ namespace VoxelRenderer
             GL.BindVertexArray(0);
 
             World.InitilizeWorld();
+
+            // Calculate Block Face Culling
+            // aka calculate which faces wont be visible.
+            World.IterateBlocks((x, y, z) =>
+            {
+                int index = World.GetIndexFromCoordinates(x, y, z);
+                Block block = World.blocks[index];
+
+                for (uint direction = 1; direction < 7; direction++)
+                {
+                    Block? neighbour = World.GetNeighbourFromDirection(x, y, z, direction);
+                    if (neighbour == null)
+                    {
+                        block.AddFaceToRender(direction);
+                    }
+                }
+
+                RenderBlock(block, x, y, z);
+            });
         }
 
         protected override void OnRenderFrame(FrameEventArgs args)
@@ -203,21 +222,11 @@ namespace VoxelRenderer
             ShaderManager.SetMatrix4(shaderProgram, "view", view);
             ShaderManager.SetMatrix4(shaderProgram, "projection", projection);
 
-            // Calculate Block Face Culling
-            // aka calculate which faces wont be visible.
+            // Render Blocks
             World.IterateBlocks((x, y, z) =>
             {
                 int index = World.GetIndexFromCoordinates(x, y, z);
                 Block block = World.blocks[index];
-
-                for (uint direction = 1; direction < 7; direction++)
-                {
-                    Block? neighbour = World.GetNeighbourFromDirection(x, y, z, direction);
-                    if (neighbour == null)
-                    {
-                        block.AddFaceToRender(direction);
-                    }
-                }
 
                 RenderBlock(block, x, y, z);
             });
