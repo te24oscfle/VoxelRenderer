@@ -109,6 +109,11 @@ namespace VoxelRenderer
             // TODO: Check faces to render via block.FacesToRender
             // Make a local veritices array, using only faces to render
             // Need to update VAO and stuff...
+
+            if (block.FaceCount == 0)
+                return;
+
+            float[] blockVertices = new float[18 * block.FaceCount];
             
             model = Matrix4.CreateTranslation(x, y, z);
             ShaderManager.SetMatrix4(shaderProgram, "model", model);
