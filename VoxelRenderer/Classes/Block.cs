@@ -22,6 +22,54 @@ namespace VoxelRenderer.Classes
             FacesToRender = new uint[6];
         }
 
+        private static float[] GetFaceVerticesFromDirection(Direction direction)
+        {
+            switch(direction)
+            {
+                case (Direction.UP):
+                    return new float[]
+                    {
+                        0.5f, 0.5f, 0.5f,
+                        0.5f, 0.5f, -0.5f,
+                        0.5f, 0.5f, -0.5f,
+                    };
+
+                case (Direction.DOWN):
+                    break;
+
+                case (Direction.LEFT):
+                    break;
+
+                case (Direction.RIGHT):
+                    break;
+
+                case (Direction.FORWARD):
+                    break;
+
+                case (Direction.BACKWARD):
+                    break;
+
+                default:
+                    return new float[18];
+            }
+        }
+
+        public float[] GetVertices()
+        {
+            float[] blockVertices = new float[18 * FaceCount];
+
+            for (uint i = 0; i < FacesToRender.Length; i++)
+            {
+                Direction direction = (Direction)i;
+
+                // Get the vertices of the face and copy them into the blockVertices
+                float[] faceVertices = GetFaceVerticesFromDirection(direction);
+                Array.Copy(faceVertices, 0, blockVertices, faceVertices.Length * i, faceVertices.Length);
+            }
+
+            return blockVertices;
+        }
+
         public void AddFaceToRender(uint direction)
         {
             FacesToRender[FaceCount] = direction;

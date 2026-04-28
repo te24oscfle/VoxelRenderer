@@ -113,7 +113,7 @@ namespace VoxelRenderer
             if (block.FaceCount == 0)
                 return;
 
-            float[] blockVertices = new float[18 * block.FaceCount];
+            float[] blockVertices = block.GetVertices();
             
             model = Matrix4.CreateTranslation(x, y, z);
             ShaderManager.SetMatrix4(shaderProgram, "model", model);
