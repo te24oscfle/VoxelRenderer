@@ -27,27 +27,70 @@ namespace VoxelRenderer.Classes
             switch(direction)
             {
                 case (Direction.UP):
-                    return new float[]
-                    {
+                    return [
+                        -0.5f, 0.5f, 0.5f,
+                        -0.5f, 0.5f, -0.5f,
+                        0.5f, 0.5f, -0.5f,
+
+                        0.5f, 0.5f, -0.5f,
                         0.5f, 0.5f, 0.5f,
-                        0.5f, 0.5f, -0.5f,
-                        0.5f, 0.5f, -0.5f,
-                    };
+                        -0.5f, 0.5f, 0.5f,
+                    ];
 
                 case (Direction.DOWN):
-                    break;
+                    return [
+                        -0.5f, -0.5f, 0.5f,
+                        -0.5f, -0.5f, -0.5f,
+                        0.5f, -0.5f, -0.5f,
+
+                        0.5f, -0.5f, -0.5f,
+                        0.5f, -0.5f, 0.5f,
+                        -0.5f, -0.5f, 0.5f,
+                    ];
 
                 case (Direction.LEFT):
-                    break;
+                    return [
+                        -0.5f, 0.5f, -0.5f,
+                        -0.5f, -0.5f, -0.5f,
+                        -0.5f, -0.5f, 0.5f,
+
+                        -0.5f, -0.5f, 0.5f,
+                        -0.5f, 0.5f, 0.5f,
+                        -0.5f, 0.5f, -0.5f,
+                    ];
 
                 case (Direction.RIGHT):
-                    break;
+                    return [
+                        0.5f, 0.5f, -0.5f,
+                        0.5f, -0.5f, -0.5f,
+                        0.5f, -0.5f, 0.5f,
+
+                        0.5f, -0.5f, 0.5f,
+                        0.5f, 0.5f, 0.5f,
+                        0.5f, 0.5f, -0.5f,
+                    ];
 
                 case (Direction.FORWARD):
-                    break;
+                    return [
+                        -0.5f, 0.5f, -0.5f,
+                        -0.5f, -0.5f, -0.5f,
+                        0.5f, -0.5f, -0.5f,
+
+                        0.5f, -0.5f, -0.5f,
+                        0.5f, 0.5f, -0.5f,
+                        -0.5f, 0.5f, -0.5f,
+                    ];
 
                 case (Direction.BACKWARD):
-                    break;
+                    return [
+                        -0.5f, 0.5f, 0.5f,
+                        -0.5f, -0.5f, 0.5f,
+                        0.5f, -0.5f, 0.5f,
+
+                        0.5f, -0.5f, 0.5f,
+                        0.5f, 0.5f, 0.5f,
+                        -0.5f, 0.5f, 0.5f,
+                    ];
 
                 default:
                     return new float[18];
