@@ -101,10 +101,10 @@ namespace VoxelRenderer.Classes
         {
             float[] blockVertices = new float[18 * FaceCount];
 
-            for (uint i = 0; i < FacesToRender.Length; i++)
+            for (uint i = 0; i < FaceCount; i++)
             {
-                Direction direction = (Direction)i;
-
+                Direction direction = (Direction)FacesToRender[i];
+                
                 // Get the vertices of the face and copy them into the blockVertices
                 float[] faceVertices = GetFaceVerticesFromDirection(direction);
                 Array.Copy(faceVertices, 0, blockVertices, faceVertices.Length * i, faceVertices.Length);

@@ -106,18 +106,20 @@ namespace VoxelRenderer
 
         protected void RenderBlock(Block block, int x, int y, int z)
         {
-            // TODO: Check faces to render via block.FacesToRender
-            // Make a local veritices array, using only faces to render
-            // Need to update VAO and stuff...
-
-            if (block.FaceCount == 0)
-                return;
+            //if (block.FaceCount == 0)
+            //    return;
 
             float[] blockVertices = block.GetVertices();
             
+            GL.BindVertexArray(VAO);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
+            GL.BufferData(BufferTarget.ArrayBuffer, blockVertices.Length * sizeof(float), blockVertices, BufferUsageHint.DynamicDraw);
+
             model = Matrix4.CreateTranslation(x, y, z);
             ShaderManager.SetMatrix4(shaderProgram, "model", model);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
+
+            int vertexCount = blockVertices.Length / 3;
+            GL.DrawArrays(PrimitiveType.Triangles, 0, vertexCount);
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -174,8 +176,8 @@ namespace VoxelRenderer
             GL.BindVertexArray(VAO);
 
             // Bind VBO and bind vertices
-            GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
-            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
+            //GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
+            //GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
 
             // Bind EBO
             //GL.BindBuffer(BufferTarget.ElementArrayBuffer, EBO);
@@ -215,15 +217,13 @@ namespace VoxelRenderer
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            GL.BindVertexArray(VAO);
-
             view = CameraManager.GetViewMatrix();
             projection = GetProjectionMatrix();
 
-            GL.UseProgram(shaderProgram);
-
             ShaderManager.SetMatrix4(shaderProgram, "view", view);
             ShaderManager.SetMatrix4(shaderProgram, "projection", projection);
+
+            GL.UseProgram(shaderProgram);
 
             // Render Blocks
             World.IterateBlocks((x, y, z) =>

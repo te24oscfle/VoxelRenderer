@@ -21,9 +21,9 @@ namespace VoxelRenderer.Classes
     
     public static class World
     {
-        public static int chunkSizeX = 3;
-        public static int chunkSizeY = 3;
-        public static int chunkSizeZ = 3;
+        public static int chunkSizeX = 1;
+        public static int chunkSizeY = 1;
+        public static int chunkSizeZ = 1;
 
         public static Block[] blocks = new Block[chunkSizeX * chunkSizeY * chunkSizeZ];
 
