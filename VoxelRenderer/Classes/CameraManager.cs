@@ -17,7 +17,7 @@ namespace VoxelRenderer.Classes
         public static float FOV = 65.0f;
 
         // Public Camera fields
-        public static Vector3 Position = new Vector3(0.0f, 0.0f, -2.0f);
+        public static Vector3 Position = new Vector3(0.0f, 0.0f, 0.0f);
         public static Vector3 LookVector = new Vector3(0.0f, 0.0f, -1.0f);
         
         // Private Camera fields

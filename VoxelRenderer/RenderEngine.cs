@@ -224,6 +224,7 @@ namespace VoxelRenderer
             ShaderManager.SetMatrix4(shaderProgram, "projection", projection);
 
             GL.UseProgram(shaderProgram);
+            GL.BindVertexArray(VAO);
 
             // Render Blocks
             World.IterateBlocks((x, y, z) =>
