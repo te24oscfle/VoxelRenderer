@@ -45,10 +45,10 @@ namespace VoxelRenderer.Classes
                     return (1, 0, 0);
 
                 case (uint)Direction.FORWARD:
-                    return (0, 0, 1);
+                    return (0, 0, -1);
 
                 case (uint)Direction.BACKWARD:
-                    return (0, 0, -1);
+                    return (0, 0, 1);
             }
 
             return (0, 0, 0);
