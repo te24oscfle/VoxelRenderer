@@ -27,62 +27,6 @@ namespace VoxelRenderer
         const float NEAR_PLANE = 0.1f;
         const float FAR_PLANE = 100.0f;
 
-        float[] vertices = {
-            -0.5f, -0.5f, -0.5f,
-             0.5f, -0.5f, -0.5f,
-             0.5f,  0.5f, -0.5f,
-             0.5f,  0.5f, -0.5f,
-            -0.5f,  0.5f, -0.5f,
-            -0.5f, -0.5f, -0.5f,
-
-            -0.5f, -0.5f,  0.5f,
-             0.5f, -0.5f,  0.5f,
-             0.5f,  0.5f,  0.5f,
-             0.5f,  0.5f,  0.5f,
-            -0.5f,  0.5f,  0.5f,
-            -0.5f, -0.5f,  0.5f,
-
-            -0.5f,  0.5f,  0.5f,
-            -0.5f,  0.5f, -0.5f,
-            -0.5f, -0.5f, -0.5f,
-            -0.5f, -0.5f, -0.5f,
-            -0.5f, -0.5f,  0.5f,
-            -0.5f,  0.5f,  0.5f,
-
-             0.5f,  0.5f,  0.5f,
-             0.5f,  0.5f, -0.5f,
-             0.5f, -0.5f, -0.5f,
-             0.5f, -0.5f, -0.5f,
-             0.5f, -0.5f,  0.5f,
-             0.5f,  0.5f,  0.5f,
-
-            -0.5f, -0.5f, -0.5f,
-             0.5f, -0.5f, -0.5f,
-             0.5f, -0.5f,  0.5f,
-             0.5f, -0.5f,  0.5f,
-            -0.5f, -0.5f,  0.5f,
-            -0.5f, -0.5f, -0.5f,
-
-            -0.5f,  0.5f, -0.5f,
-             0.5f,  0.5f, -0.5f,
-             0.5f,  0.5f,  0.5f,
-             0.5f,  0.5f,  0.5f,
-            -0.5f,  0.5f,  0.5f,
-            -0.5f,  0.5f, -0.5f
-        };
-
-        //float[] vertices = {
-        //    -0.5f, 0.5f, 0.0f,  // Top-left
-        //    0.5f, 0.5f, 0.0f,   // Top-right
-        //    -0.5f, -0.5f, 0.0f, // Bottom-left
-        //    0.5f, -0.5f, 0.0f,  // Bottom right
-        //};
-
-        //uint[] indicies = {
-        //    0, 2, 3, // Left triangle
-        //    0, 1, 3, // Right triangle
-        //}; 
-
         protected string GetShaderSource(string shaderPath)
         {
             string fullPath = Path.Combine(
@@ -106,8 +50,8 @@ namespace VoxelRenderer
 
         protected void RenderBlock(Block block, int x, int y, int z)
         {
-            //if (block.FaceCount == 0)
-            //    return;
+            if (block.FaceCount == 0)
+                return;
 
             float[] blockVertices = block.GetVertices();
             
@@ -170,18 +114,10 @@ namespace VoxelRenderer
             // VBO, VAO and EBO Setup
             VBO = GL.GenBuffer();
             VAO = GL.GenVertexArray();
-            EBO = GL.GenBuffer();
 
-            // Bind VAO
+            // Bind VAO & VBO
             GL.BindVertexArray(VAO);
-
-            // Bind VBO and bind vertices
-            //GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
-            //GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
-
-            // Bind EBO
-            //GL.BindBuffer(BufferTarget.ElementArrayBuffer, EBO);
-            //GL.BufferData(BufferTarget.ElementArrayBuffer, indicies.Length * sizeof(uint), indicies, BufferUsageHint.StaticDraw);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
 
             // Configure vertex attributes
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
@@ -191,6 +127,7 @@ namespace VoxelRenderer
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.BindVertexArray(0);
 
+            // World Initilizing
             World.InitilizeWorld();
 
             // Calculate Block Face Culling
