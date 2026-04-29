@@ -97,6 +97,9 @@ namespace VoxelRenderer
 
             GL.Enable(EnableCap.DepthTest);
 
+            GL.Enable(EnableCap.CullFace);
+            GL.CullFace(TriangleFace.Back);
+
             CursorState = CursorState.Grabbed;
 
             // Background Color
@@ -145,6 +148,28 @@ namespace VoxelRenderer
                         block.AddFaceToRender(direction);
                     }
                 }
+            });
+
+            // Add all block faces into one chunkVerticies array
+            uint totalFaceCount = 0;
+            World.IterateBlocks((x, y, z) =>
+            {
+                int index = World.GetIndexFromCoordinates(x, y, z);
+                Block block = World.blocks[index];
+
+                totalFaceCount += block.FaceCount;
+            });
+
+            float[] chunkVertices = new float[18 * totalFaceCount];
+            int i = 0;
+            World.IterateBlocks((x, y, z) =>
+            {
+                int index = World.GetIndexFromCoordinates(x, y, z);
+                Block block = World.blocks[index];
+
+                float[] blockVertices = block.GetVertices();
+                Array.Copy(blockVertices, 0, chunkVertices, blockVertices.Length * i, blockVertices.Length);
+                i++;
             });
         }
 

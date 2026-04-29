@@ -29,11 +29,11 @@ namespace VoxelRenderer.Classes
                 case (Direction.UP):
                     return [
                         -0.5f, 0.5f, 0.5f,
-                        -0.5f, 0.5f, -0.5f,
+                        0.5f, 0.5f, 0.5f,
                         0.5f, 0.5f, -0.5f,
 
                         0.5f, 0.5f, -0.5f,
-                        0.5f, 0.5f, 0.5f,
+                        -0.5f, 0.5f, -0.5f,
                         -0.5f, 0.5f, 0.5f,
                     ];
 
@@ -62,22 +62,22 @@ namespace VoxelRenderer.Classes
                 case (Direction.RIGHT):
                     return [
                         0.5f, 0.5f, -0.5f,
-                        0.5f, -0.5f, -0.5f,
+                        0.5f, 0.5f, 0.5f,
                         0.5f, -0.5f, 0.5f,
 
                         0.5f, -0.5f, 0.5f,
-                        0.5f, 0.5f, 0.5f,
+                        0.5f, -0.5f, -0.5f,
                         0.5f, 0.5f, -0.5f,
                     ];
 
                 case (Direction.FORWARD):
                     return [
                         -0.5f, 0.5f, -0.5f,
-                        -0.5f, -0.5f, -0.5f,
+                        0.5f, 0.5f, -0.5f,
                         0.5f, -0.5f, -0.5f,
 
                         0.5f, -0.5f, -0.5f,
-                        0.5f, 0.5f, -0.5f,
+                        -0.5f, -0.5f, -0.5f,
                         -0.5f, 0.5f, -0.5f,
                     ];
 
