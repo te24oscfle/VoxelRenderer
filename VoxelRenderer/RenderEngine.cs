@@ -161,15 +161,15 @@ namespace VoxelRenderer
             });
 
             float[] chunkVertices = new float[18 * totalFaceCount];
-            int i = 0;
+            int offset = 0;
             World.IterateBlocks((x, y, z) =>
             {
                 int index = World.GetIndexFromCoordinates(x, y, z);
                 Block block = World.blocks[index];
 
                 float[] blockVertices = block.GetVertices();
-                Array.Copy(blockVertices, 0, chunkVertices, blockVertices.Length * i, blockVertices.Length);
-                i++;
+                Array.Copy(blockVertices, 0, chunkVertices, offset, blockVertices.Length);
+                offset += blockVertices.Length;
             });
         }
 
