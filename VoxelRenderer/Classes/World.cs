@@ -134,7 +134,7 @@ namespace VoxelRenderer.Classes
             IterateBlocks((x, y, z) =>
             {
                 int index = GetIndexFromCoordinates(x, y, z);
-                Block block = new Block();
+                Block block = blocks[index];
 
                 float[] vertices = block.GetVertices();
                 block.Vertices = vertices;
