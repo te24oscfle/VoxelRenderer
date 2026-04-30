@@ -52,18 +52,15 @@ namespace VoxelRenderer
         {
             if (block.FaceCount == 0)
                 return;
-
-            float[] blockVertices = block.GetVertices();
             
             GL.BindVertexArray(VAO);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
-            GL.BufferData(BufferTarget.ArrayBuffer, blockVertices.Length * sizeof(float), blockVertices, BufferUsageHint.DynamicDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, block.Vertices.Length * sizeof(float), block.Vertices, BufferUsageHint.DynamicDraw);
 
             model = Matrix4.CreateTranslation(x, y, z);
             ShaderManager.SetMatrix4(shaderProgram, "model", model);
 
-            int vertexCount = blockVertices.Length / 3;
-            GL.DrawArrays(PrimitiveType.Triangles, 0, vertexCount);
+            GL.DrawArrays(PrimitiveType.Triangles, 0, block.VertexCount);
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -132,23 +129,6 @@ namespace VoxelRenderer
 
             // World Initilizing
             World.InitilizeWorld();
-
-            // Calculate Block Face Culling
-            // aka calculate which faces wont be visible.
-            World.IterateBlocks((x, y, z) =>
-            {
-                int index = World.GetIndexFromCoordinates(x, y, z);
-                Block block = World.blocks[index];
-
-                for (uint direction = 1; direction < 7; direction++)
-                {
-                    Block? neighbour = World.GetNeighbourFromDirection(x, y, z, direction);
-                    if (neighbour == null)
-                    {
-                        block.AddFaceToRender(direction);
-                    }
-                }
-            });
         }
 
         protected override void OnRenderFrame(FrameEventArgs args)

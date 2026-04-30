@@ -14,6 +14,9 @@ namespace VoxelRenderer.Classes
         public uint[] FacesToRender;
         public uint FaceCount = 0;
 
+        public float[] Vertices;
+        public int VertexCount;
+
         public Block() : this(0) { }
         
         public Block(int blockId)

@@ -29,7 +29,6 @@ namespace VoxelRenderer.Classes
 
         private static (int, int, int) GetNeighbourIndexFromDirection(uint direction)
         {
-            
             switch(direction)
             {
                 case (uint)Direction.UP:
@@ -53,7 +52,6 @@ namespace VoxelRenderer.Classes
 
             return (0, 0, 0);
         }
-
 
         public static int GetIndexFromCoordinates(int x, int y, int z)
         {
@@ -104,11 +102,43 @@ namespace VoxelRenderer.Classes
 
         public static void InitilizeWorld()
         {
+            // Create blocks
             IterateBlocks((x, y, z) =>
             {
                 int index = GetIndexFromCoordinates(x, y, z);
                 Block block = new Block();
                 blocks[index] = block;
+            });
+
+            // Calculate culling
+            IterateBlocks((x, y, z) =>
+            {
+                int index = GetIndexFromCoordinates(x, y, z);
+                Block block = blocks[index];
+
+                // Direction = 0 is reserved for null, directions are defined for 1 through 6. See direction enum at the top of World.cs
+                for (uint direction = 1; direction < 7; direction++)
+                {
+                    Block? neighbour = GetNeighbourFromDirection(x, y, z, direction);
+                    // If a neighbour doesnt exist in this direction, the face will be visible, so add it to the render list
+                    if (neighbour == null)
+                    {
+                        block.AddFaceToRender(direction);
+                    }
+
+                    // If the neighbour does exist, the face wont be visible we wont need to render it
+                }
+            });
+
+            // Initilize vertices
+            IterateBlocks((x, y, z) =>
+            {
+                int index = GetIndexFromCoordinates(x, y, z);
+                Block block = new Block();
+
+                float[] vertices = block.GetVertices();
+                block.Vertices = vertices;
+                block.VertexCount = block.Vertices.Length / 3;
             });
         }
     }
