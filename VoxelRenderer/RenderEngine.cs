@@ -92,6 +92,7 @@ namespace VoxelRenderer
         {
             base.OnLoad();
 
+            // GL Setup
             GL.Enable(EnableCap.DepthTest);
 
             GL.Enable(EnableCap.CullFace);

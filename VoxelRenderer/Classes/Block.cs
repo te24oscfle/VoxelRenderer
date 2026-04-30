@@ -8,6 +8,13 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace VoxelRenderer.Classes
 {
+    public enum BlockID
+    {
+        GRASS,
+        DIRT,
+        STONE
+    }
+
     public class Block
     {
         public int BlockId = 0;
