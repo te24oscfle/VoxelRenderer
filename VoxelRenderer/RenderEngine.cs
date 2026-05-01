@@ -50,16 +50,20 @@ namespace VoxelRenderer
 
         protected void RenderBlock(Block block, int x, int y, int z)
         {
+            // No faces to render
             if (block.FaceCount == 0)
                 return;
             
+            // Send vertices data to the GPU
             GL.BindVertexArray(VAO);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
             GL.BufferData(BufferTarget.ArrayBuffer, block.Vertices.Length * sizeof(float), block.Vertices, BufferUsageHint.DynamicDraw);
 
+            // Position the block
             model = Matrix4.CreateTranslation(x, y, z);
             ShaderManager.SetMatrix4(shaderProgram, "model", model);
 
+            // Render the block
             GL.DrawArrays(PrimitiveType.Triangles, 0, block.VertexCount);
         }
 
@@ -187,6 +191,7 @@ namespace VoxelRenderer
         {
             base.OnUnload();
 
+            // Cleanup
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.BindVertexArray(0);
 

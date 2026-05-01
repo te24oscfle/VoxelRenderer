@@ -115,7 +115,7 @@ namespace VoxelRenderer.Classes
                 int index = GetIndexFromCoordinates(x, y, z);
                 Block block = blocks[index];
 
-                // Direction = 0 is reserved for null, directions are defined for 1 through 6. See direction enum at the top of World.cs
+                // Direction = 0 is reserved for null, directions are defined for 1 through 6. See Direction enum in World.cs
                 for (int direction = 1; direction < 7; direction++)
                 {
                     Block? neighbour = GetNeighbourFromDirection(x, y, z, direction);
@@ -125,7 +125,7 @@ namespace VoxelRenderer.Classes
                         block.AddFaceToRender(direction);
                     }
 
-                    // If the neighbour does exist, the face wont be visible we wont need to render it
+                    // If the neighbour does exist, the face wont be visible and we wont need to render it
                 }
             });
 
