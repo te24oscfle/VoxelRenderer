@@ -86,16 +86,15 @@ namespace VoxelRenderer.Classes
             int y = originY + dirY;
             int z = originZ + dirZ;
 
-            // Check if index is invalid
-            if(x >= chunkSizeX || y >= chunkSizeY || z >= chunkSizeZ) {
+            if (x < 0 || y < 0 || z < 0) 
                 return null;
-            }
+            
+            if(x >= chunkSizeX || y >= chunkSizeY || z >= chunkSizeZ)
+                return null;
 
             int index = GetIndexFromCoordinates(x, y, z);
             if(index >= blocks.Length)
-            {
                 return null;
-            }
 
             return blocks[index];
         }
