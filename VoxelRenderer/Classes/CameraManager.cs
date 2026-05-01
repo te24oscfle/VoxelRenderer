@@ -17,7 +17,7 @@ namespace VoxelRenderer.Classes
         public static float FOV = 65.0f;
 
         // Public Camera fields
-        public static Vector3 Position = new Vector3(0.0f, 0.0f, 0.0f);
+        public static Vector3 Position = new Vector3(8.0f, 26.0f, 8.0f);
         public static Vector3 LookVector = new Vector3(0.0f, 0.0f, -1.0f);
         
         // Private Camera fields
@@ -28,8 +28,22 @@ namespace VoxelRenderer.Classes
 
         private static void UpdateYawAndPitch(Vector2 deltaPosition)
         {
-            yaw += deltaPosition.X * Sensitivity;
-            pitch -= deltaPosition.Y * Sensitivity;
+            float deltaYaw = deltaPosition.X * Sensitivity;
+            float deltaPitch = deltaPosition.Y * Sensitivity;
+            
+            yaw += deltaYaw;
+
+            if (pitch - deltaPitch < -89.0f) {
+                pitch = -89.0f;
+            } 
+            else if (pitch - deltaPitch > 89.0f)
+            {
+                pitch = 89.0f;
+            }
+            else
+            {
+                pitch -= deltaPitch;
+            }
         }
         
         private static void UpdateLookVector()
