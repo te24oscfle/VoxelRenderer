@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VoxelRenderer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+045728a0d70844f76aca5fd273b6c34865cc0b5c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d50682c0ae7d6a71c1b74bb8c5136ab915030c5b")]
 [assembly: System.Reflection.AssemblyProductAttribute("VoxelRenderer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VoxelRenderer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

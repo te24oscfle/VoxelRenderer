@@ -18,8 +18,8 @@ namespace VoxelRenderer.Classes
     public class Block
     {
         public int BlockId = 0;
-        public uint[] FacesToRender;
-        public uint FaceCount = 0;
+        public int[] FacesToRender;
+        public int FaceCount = 0;
 
         public float[] Vertices;
         public int VertexCount;
@@ -29,7 +29,7 @@ namespace VoxelRenderer.Classes
         public Block(int blockId)
         {
             BlockId = blockId;
-            FacesToRender = new uint[6];
+            FacesToRender = new int[6];
         }
 
         private static float[] GetFaceVerticesFromDirection(Direction direction)
@@ -109,13 +109,13 @@ namespace VoxelRenderer.Classes
 
         public float[] GetVertices()
         {
+            // 1 face * 2 triangles * 3 verticies * 3 floats = 18 floats
             float[] blockVertices = new float[18 * FaceCount];
 
-            for (uint i = 0; i < FaceCount; i++)
+            for (int i = 0; i < FaceCount; i++)
             {
                 Direction direction = (Direction)FacesToRender[i];
                 
-                // Get the vertices of the face and copy them into the blockVertices
                 float[] faceVertices = GetFaceVerticesFromDirection(direction);
                 Array.Copy(faceVertices, 0, blockVertices, faceVertices.Length * i, faceVertices.Length);
             }
@@ -123,7 +123,7 @@ namespace VoxelRenderer.Classes
             return blockVertices;
         }
 
-        public void AddFaceToRender(uint direction)
+        public void AddFaceToRender(int direction)
         {
             FacesToRender[FaceCount] = direction;
             FaceCount++;

@@ -27,26 +27,26 @@ namespace VoxelRenderer.Classes
 
         public static Block[] blocks = new Block[chunkSizeX * chunkSizeY * chunkSizeZ];
 
-        private static (int, int, int) GetNeighbourIndexFromDirection(uint direction)
+        private static (int, int, int) GetNeighbourIndexFromDirection(int direction)
         {
             switch(direction)
             {
-                case (uint)Direction.UP:
+                case (int)Direction.UP:
                     return (0, 1, 0);
 
-                case (uint)Direction.DOWN:
+                case (int)Direction.DOWN:
                     return (0, -1, 0);
 
-                case (uint)Direction.LEFT:
+                case (int)Direction.LEFT:
                     return (-1, 0, 0);
 
-                case (uint)Direction.RIGHT:
+                case (int)Direction.RIGHT:
                     return (1, 0, 0);
 
-                case (uint)Direction.FORWARD:
+                case (int)Direction.FORWARD:
                     return (0, 0, -1);
 
-                case (uint)Direction.BACKWARD:
+                case (int)Direction.BACKWARD:
                     return (0, 0, 1);
             }
 
@@ -78,7 +78,7 @@ namespace VoxelRenderer.Classes
             }
         }
 
-        public static Block? GetNeighbourFromDirection(int originX, int originY, int originZ, uint direction)
+        public static Block? GetNeighbourFromDirection(int originX, int originY, int originZ, int direction)
         {
             (int dirX, int dirY, int dirZ) = GetNeighbourIndexFromDirection(direction);
 
@@ -87,12 +87,12 @@ namespace VoxelRenderer.Classes
             int z = originZ + dirZ;
 
             // Check if index is invalid
-            if((uint)x >= chunkSizeX || (uint)y >= chunkSizeY || (uint)z >= chunkSizeZ) {
+            if(x >= chunkSizeX || y >= chunkSizeY || z >= chunkSizeZ) {
                 return null;
             }
 
             int index = GetIndexFromCoordinates(x, y, z);
-            if((uint)index >= blocks.Length)
+            if(index >= blocks.Length)
             {
                 return null;
             }
@@ -117,7 +117,7 @@ namespace VoxelRenderer.Classes
                 Block block = blocks[index];
 
                 // Direction = 0 is reserved for null, directions are defined for 1 through 6. See direction enum at the top of World.cs
-                for (uint direction = 1; direction < 7; direction++)
+                for (int direction = 1; direction < 7; direction++)
                 {
                     Block? neighbour = GetNeighbourFromDirection(x, y, z, direction);
                     // If a neighbour doesnt exist in this direction, the face will be visible, so add it to the render list
