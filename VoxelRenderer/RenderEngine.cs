@@ -1,15 +1,4 @@
-﻿using OpenTK.Mathematics;
-using OpenTK.Windowing.Common;
-using OpenTK.Windowing.Desktop;
-using OpenTK.Windowing.GraphicsLibraryFramework;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Text;
-using VoxelRenderer.Classes;
-
-namespace VoxelRenderer
+﻿namespace VoxelRenderer
 {
     public class RenderEngine : GameWindow
     {
@@ -135,6 +124,9 @@ namespace VoxelRenderer
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
             GL.EnableVertexAttribArray(0);
 
+            // Textures
+
+            
             // Unbind VBO & VAO
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.BindVertexArray(0);

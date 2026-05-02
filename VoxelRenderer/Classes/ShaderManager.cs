@@ -1,9 +1,4 @@
-﻿using OpenTK.Mathematics;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace VoxelRenderer.Classes
+﻿namespace VoxelRenderer.Classes
 {
     internal class ShaderManager
     {
