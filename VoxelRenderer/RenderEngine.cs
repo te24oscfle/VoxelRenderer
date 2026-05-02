@@ -27,6 +27,13 @@ namespace VoxelRenderer
         const float NEAR_PLANE = 0.1f;
         const float FAR_PLANE = 100.0f;
 
+        float[] textureCoords = [
+            0.0f, 0.0f,
+            0.5f, 0.0f,
+            0.5f, 0.5f,
+            0.0f, 0.5f
+        ];
+
         protected string GetShaderSource(string shaderPath)
         {
             string fullPath = Path.Combine(
