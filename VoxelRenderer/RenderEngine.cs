@@ -8,6 +8,7 @@
 
         int VBO, VAO, EBO;
         int shaderProgram;
+        int texture;
 
         Matrix4 model;
         Matrix4 view;
@@ -15,6 +16,11 @@
 
         const float NEAR_PLANE = 0.1f;
         const float FAR_PLANE = 100.0f;
+
+        readonly string texturePath = Path.Combine(
+            AppContext.BaseDirectory,
+            "textureAtlas.jpg"
+        );
 
         float[] textureCoords = [
             0.0f, 0.0f,
@@ -103,15 +109,6 @@
             // Background Color
             GL.ClearColor(0.2f, 0.4f, 0.6f, 0.1f);
 
-            // Shader Setup
-            string vertexShaderSource = GetShaderSource("vertexShader.glsl");
-            string fragmentShaderSource = GetShaderSource("fragmentShader.glsl");
-
-            int vertexShader = ShaderManager.CompileShader(ShaderType.VertexShader, vertexShaderSource);
-            int fragmentShader = ShaderManager.CompileShader(ShaderType.FragmentShader, fragmentShaderSource);
-
-            shaderProgram = ShaderManager.LinkShaders(vertexShader, fragmentShader);
-
             // VBO, VAO and EBO Setup
             VBO = GL.GenBuffer();
             VAO = GL.GenVertexArray();
@@ -130,11 +127,49 @@
             GL.EnableVertexAttribArray(1);
 
             // Textures
+            texture = GL.GenTexture();
+            GL.BindTexture(TextureTarget.Texture2D, texture);
 
+            // Min & Mag filters
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+
+            // Wrapping
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
+
+            // stb_image loads images from the top-left pixel, OpenGL loads images from bottom-left, causing images to appear flipped
+            // Flipping the image vertically upon load will fix this.
+            StbImage.stbi_set_flip_vertically_on_load(1);
+
+            // Load the image
+            ImageResult textureAtlas = ImageResult.FromStream(File.OpenRead(texturePath), ColorComponents.RedGreenBlueAlpha);
+
+            // Upload image to the GPU
+            GL.TexImage2D(
+                TextureTarget.Texture2D,
+                0,
+                PixelInternalFormat.Rgba,
+                textureAtlas.Width,
+                textureAtlas.Height,
+                0,
+                PixelFormat.Rgba,
+                PixelType.UnsignedByte,
+                textureAtlas.Data
+            );
 
             // Unbind VBO & VAO
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.BindVertexArray(0);
+
+            // Shader Setup
+            string vertexShaderSource = GetShaderSource("vertexShader.glsl");
+            string fragmentShaderSource = GetShaderSource("fragmentShader.glsl");
+
+            int vertexShader = ShaderManager.CompileShader(ShaderType.VertexShader, vertexShaderSource);
+            int fragmentShader = ShaderManager.CompileShader(ShaderType.FragmentShader, fragmentShaderSource);
+
+            shaderProgram = ShaderManager.LinkShaders(vertexShader, fragmentShader);
 
             // World Initilizing
             World.InitilizeWorld();
@@ -151,6 +186,9 @@
 
             ShaderManager.SetMatrix4(shaderProgram, "view", view);
             ShaderManager.SetMatrix4(shaderProgram, "projection", projection);
+
+            GL.BindTexture(TextureTarget.Texture2D, texture);
+            
 
             GL.UseProgram(shaderProgram);
             GL.BindVertexArray(VAO);
