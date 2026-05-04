@@ -129,7 +129,7 @@
 
                 float[] vertices = block.GetVertices();
                 block.Vertices = vertices;
-                block.VertexCount = block.Vertices.Length / 3;
+                block.VertexCount = block.Vertices.Length / 5;
             });
         }
     }

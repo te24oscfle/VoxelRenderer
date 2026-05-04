@@ -188,7 +188,6 @@
             ShaderManager.SetMatrix4(shaderProgram, "projection", projection);
 
             GL.BindTexture(TextureTarget.Texture2D, texture);
-            
 
             GL.UseProgram(shaderProgram);
             GL.BindVertexArray(VAO);
