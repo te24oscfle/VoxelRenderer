@@ -18,7 +18,7 @@
 
         public Block() : this(0) { }
         
-        public Block(int blockId)
+        public Block(BlockID blockId)
         {
             BlockId = blockId;
             FacesToRender = new int[6];
