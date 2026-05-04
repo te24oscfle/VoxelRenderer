@@ -97,3 +97,4 @@ C:\Users\Oscar\source\repos\te24oscfle\VoxelRenderer\VoxelRenderer\obj\Debug\net
 C:\Users\Oscar\source\repos\te24oscfle\VoxelRenderer\VoxelRenderer\obj\Debug\net10.0\ref\VoxelRenderer.dll
 C:\Users\te24o\source\repos\VoxelRenderer\VoxelRenderer\obj\Debug\net10.0\VoxelRenderer.sourcelink.json
 C:\Users\Oscar\source\repos\te24oscfle\VoxelRenderer\VoxelRenderer\bin\Debug\net10.0\StbImageSharp.dll
+C:\Users\te24o\source\repos\VoxelRenderer\VoxelRenderer\bin\Debug\net10.0\StbImageSharp.dll
