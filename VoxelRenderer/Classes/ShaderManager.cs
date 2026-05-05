@@ -2,6 +2,17 @@
 {
     internal class ShaderManager
     {
+        public static string GetShaderSource(string shaderPath)
+        {
+            string fullPath = Path.Combine(
+                AppContext.BaseDirectory,
+                "Shaders",
+                shaderPath
+            );
+            string source = File.ReadAllText(fullPath);
+            return source;
+        }
+
         public static int CompileShader(ShaderType shaderType, string source)
         {
             // Build and compile shader

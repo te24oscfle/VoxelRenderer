@@ -24,17 +24,13 @@
             
             yaw += deltaYaw;
 
-            if (pitch - deltaPitch < -89.0f) {
+            // Clamp pitch, otherwise user can look up and down infinitely.
+            if (pitch - deltaPitch < -89.0f)
                 pitch = -89.0f;
-            } 
             else if (pitch - deltaPitch > 89.0f)
-            {
                 pitch = 89.0f;
-            }
             else
-            {
                 pitch -= deltaPitch;
-            }
         }
         
         private static void UpdateLookVector()

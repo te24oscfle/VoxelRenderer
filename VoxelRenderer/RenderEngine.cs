@@ -6,7 +6,7 @@
 
         bool WIREFRAME_MODE = false;
 
-        int VBO, VAO, EBO;
+        int VBO, VAO;
         int shaderProgram;
         int texture;
 
@@ -14,32 +14,14 @@
         Matrix4 view;
         Matrix4 projection;
 
-        const float NEAR_PLANE = 0.1f;
-        const float FAR_PLANE = 100.0f;
+        readonly float NEAR_PLANE = 0.1f;
+        readonly float FAR_PLANE = 100.0f;
 
         readonly string texturePath = Path.Combine(
             AppContext.BaseDirectory,
             "textureAtlas.jpg"
         );
 
-        float[] textureCoords = [
-            0.0f, 0.0f,
-            0.5f, 0.0f,
-            0.5f, 0.5f,
-            0.0f, 0.5f
-        ];
-
-        protected string GetShaderSource(string shaderPath)
-        {
-            string fullPath = Path.Combine(
-                AppContext.BaseDirectory,
-                "Shaders",
-                shaderPath
-            );
-            string source = File.ReadAllText(fullPath);
-            return source;
-        }
-        
         protected Matrix4 GetProjectionMatrix()
         {
             return Matrix4.CreatePerspectiveFieldOfView(
@@ -77,20 +59,17 @@
             var keyboardState = KeyboardState;
 
             if(!IsFocused)
-            {
                 return;
-            }
 
+            // Close window
             if (KeyboardState.IsKeyDown(Keys.Escape))
-            {
                 Close();
-            }
 
+            // Toggle Wireframe mode
             if (KeyboardState.IsKeyPressed(Keys.F))
-            {
                 WIREFRAME_MODE = !WIREFRAME_MODE;
-            }
 
+            // Send the keyboardState to the camera manager and update the cam position
             CameraManager.UpdatePosition(keyboardState, deltaTime);
         }
 
@@ -109,7 +88,7 @@
             // Background Color
             GL.ClearColor(0.2f, 0.4f, 0.6f, 0.1f);
 
-            // VBO, VAO and EBO Setup
+            // VBO and VAO Setup
             VBO = GL.GenBuffer();
             VAO = GL.GenVertexArray();
 
@@ -118,7 +97,8 @@
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
 
             // Configure vertex attributes
-            // position data
+            
+            // Position data
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
             GL.EnableVertexAttribArray(0);
 
@@ -159,8 +139,8 @@
             GL.BindVertexArray(0);
 
             // Shader Setup
-            string vertexShaderSource = GetShaderSource("vertexShader.glsl");
-            string fragmentShaderSource = GetShaderSource("fragmentShader.glsl");
+            string vertexShaderSource = ShaderManager.GetShaderSource("vertexShader.glsl");
+            string fragmentShaderSource = ShaderManager.GetShaderSource("fragmentShader.glsl");
 
             int vertexShader = ShaderManager.CompileShader(ShaderType.VertexShader, vertexShaderSource);
             int fragmentShader = ShaderManager.CompileShader(ShaderType.FragmentShader, fragmentShaderSource);
@@ -177,6 +157,7 @@
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
+            // Shader setup
             view = CameraManager.GetViewMatrix();
             projection = GetProjectionMatrix();
 
@@ -197,7 +178,7 @@
                 RenderBlock(block, x, y, z);
             });
 
-            // WIREFRAME MODE
+            // Wireframe mode
             if (WIREFRAME_MODE)
             {
                 GL.PolygonMode(TriangleFace.FrontAndBack, PolygonMode.Line);

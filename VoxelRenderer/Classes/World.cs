@@ -50,12 +50,6 @@
             return x + (y * chunkSizeX) + (z * chunkSizeX * chunkSizeY);
         }
 
-        // Not yet implemented
-        public static (int, int, int) GetCoordinatesFromIndex(int index)
-        {
-            return (0, 0, 0);
-        }
-
         public static void IterateBlocks(Action<int, int, int> iterator)
         {
             for (int x = 0; x < chunkSizeX; x++)
@@ -78,6 +72,7 @@
             int y = originY + dirY;
             int z = originZ + dirZ;
 
+            // Null checks
             if (x < 0 || y < 0 || z < 0) 
                 return null;
             
