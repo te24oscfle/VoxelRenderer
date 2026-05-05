@@ -143,7 +143,7 @@
 
         public float[] GetVertices()
         {
-            // 1 face * 2 triangles * (3 verticies + 2 uv coordinates) * 3 vertex positions = 30 floats 
+            // 1 face * 2 triangles * 3 vertexes * (3 position floats + 2 uv floats) = 30 floats
             float[] blockVertices = new float[30 * FaceCount];
 
             for (int i = 0; i < FaceCount; i++)
