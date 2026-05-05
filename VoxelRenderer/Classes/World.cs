@@ -98,6 +98,14 @@
             {
                 int index = GetIndexFromCoordinates(x, y, z);
                 Block block = new Block();
+
+                if(y == chunkSizeY-1)
+                    block.BlockId = BlockID.GRASS;
+                else if (y > chunkSizeY-3)
+                    block.BlockId = BlockID.DIRT;
+                else
+                    block.BlockId = BlockID.STONE;
+
                 blocks[index] = block;
             });
 

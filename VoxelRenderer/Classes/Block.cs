@@ -99,18 +99,46 @@
             }
         }
 
-        private float[] GetUVOffsetFromId(BlockID id)
+        private (float, float) GetUVOffsetFromDirection(Direction direction)
         {
-            // Not yet implemented
-            return [
-                0.0f, 0.0f,
-                0.0f, 0.0f,
-                0.0f, 0.0f,
+            string texture = "Dirt";
 
-                0.0f, 0.0f,
-                0.0f, 0.0f,
-                0.0f, 0.0f
-            ];
+            if(BlockId == BlockID.STONE)
+                texture = "Stone";
+
+            if (BlockId == BlockID.GRASS)
+            {
+                if (direction == Direction.UP)
+                    texture = "GrassTop";
+                else if (direction != Direction.DOWN)
+                    // We want the side faces. we already know its the face is not UP.
+                    // Only face left that isnt a side face is DOWN
+                    texture = "GrassSide";
+            }
+
+            switch (texture)
+            {
+                case "Dirt":
+                    return (0.0f, 0.0f);
+                case "GrassTop":
+                    return (0.5f, 0.0f);
+                case "GrassSide":
+                    return (0.0f, 0.5f);
+                case "Stone":
+                    return (0.5f, 0.5f);
+                default:
+                    return (0.0f, 0.0f);
+
+            }
+        }
+
+        private void ApplyUVOffset(float[] vertices, float offsetX, float offsetY)
+        {
+            for(int i = 0; i < vertices.Length / 5; i += 5)
+            {
+                vertices[i + 3] += offsetX;
+                vertices[i + 4] += offsetY;
+            }
         }
 
         public float[] GetVertices()
@@ -123,6 +151,8 @@
                 Direction direction = (Direction)FacesToRender[i];
                 
                 float[] faceVertices = GetFaceVerticesFromDirection(direction);
+                (float offsetX, float offsetY) = GetUVOffsetFromDirection(direction);
+                ApplyUVOffset(faceVertices, offsetX, offsetY);
                 Array.Copy(faceVertices, 0, blockVertices, faceVertices.Length * i, faceVertices.Length);
             }
 
