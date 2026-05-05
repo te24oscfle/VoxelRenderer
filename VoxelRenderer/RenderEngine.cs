@@ -138,10 +138,6 @@
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
 
-            // stb_image loads images from the top-left pixel, OpenGL loads images from bottom-left, causing images to appear flipped
-            // Flipping the image vertically upon load will fix this.
-            StbImage.stbi_set_flip_vertically_on_load(1);
-
             // Load the image
             ImageResult textureAtlas = ImageResult.FromStream(File.OpenRead(texturePath), ColorComponents.RedGreenBlueAlpha);
 

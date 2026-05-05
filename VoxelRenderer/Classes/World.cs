@@ -101,7 +101,7 @@
 
                 if(y == chunkSizeY-1)
                     block.BlockId = BlockID.GRASS;
-                else if (y > chunkSizeY-3)
+                else if (y > chunkSizeY-5)
                     block.BlockId = BlockID.DIRT;
                 else
                     block.BlockId = BlockID.STONE;

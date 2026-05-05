@@ -42,11 +42,11 @@
                 case (Direction.DOWN):
                     return [
                         -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, // A
-                        -0.5f, -0.5f, -0.5f, 0.49f, 0.0f, // D
-                        0.5f, -0.5f, -0.5f, 0.49f, 0.49f, // C
+                        -0.5f, -0.5f, -0.5f, 0.5f, 0.0f, // D
+                        0.5f, -0.5f, -0.5f, 0.5f, 0.5f, // C
 
-                        0.5f, -0.5f, -0.5f, 0.49f, 0.49f, // C
-                        0.5f, -0.5f, 0.5f, 0.0f, 0.49f, // B
+                        0.5f, -0.5f, -0.5f, 0.5f, 0.5f, // C
+                        0.5f, -0.5f, 0.5f, 0.0f, 0.5f, // B
                         -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, // A
                     ];
 
@@ -119,11 +119,11 @@
             switch (texture)
             {
                 case "Dirt":
-                    return (0.0f, 0.0f);
-                case "GrassTop":
-                    return (0.5f, 0.0f);
-                case "GrassSide":
                     return (0.0f, 0.5f);
+                case "GrassTop":
+                    return (0.0f, 0.0f);
+                case "GrassSide":
+                    return (0.5f, 0.0f);
                 case "Stone":
                     return (0.5f, 0.5f);
                 default:
@@ -134,7 +134,7 @@
 
         private void ApplyUVOffset(float[] vertices, float offsetX, float offsetY)
         {
-            for(int i = 0; i < vertices.Length / 5; i += 5)
+            for(int i = 0; i < vertices.Length; i += 5)
             {
                 vertices[i + 3] += offsetX;
                 vertices[i + 4] += offsetY;
